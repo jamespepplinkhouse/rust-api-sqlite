@@ -1,10 +1,17 @@
 use actix_web::{web, HttpResponse, Responder};
-use serde::Deserialize;
+use serde::{Deserialize, Serialize};
 use sqlx::{Row, SqlitePool};
 
 #[derive(Deserialize)]
 pub struct UserId {
     pub id: i32,
+}
+
+#[derive(Serialize)]
+pub struct User {
+    pub id: i32,
+    pub name: String,
+    pub age: i32,
 }
 
 pub async fn get_user(pool: web::Data<SqlitePool>, user_id: web::Path<UserId>) -> impl Responder {
@@ -16,11 +23,13 @@ pub async fn get_user(pool: web::Data<SqlitePool>, user_id: web::Path<UserId>) -
 
     match result {
         Ok(row) => {
-            let id: i32 = row.get("id");
-            let name: String = row.get("name");
-            let age: i32 = row.get("age");
-            HttpResponse::Ok().body(format!("User: ID={} Name={} Age={}", id, name, age))
+            let user = User {
+                id: row.get("id"),
+                name: row.get("name"),
+                age: row.get("age"),
+            };
+            HttpResponse::Ok().json(user)
         }
-        Err(_) => HttpResponse::NotFound().body("User not found"),
+        Err(_) => HttpResponse::NotFound().json("User not found"),
     }
 }
