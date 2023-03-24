@@ -1060,7 +1060,7 @@ dependencies = [
 ]
 
 [[package]]
-name = "rust-example"
+name = "rust-api-sqlite"
 version = "0.1.0"
 dependencies = [
  "actix-web",
