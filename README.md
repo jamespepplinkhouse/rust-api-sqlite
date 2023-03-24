@@ -18,6 +18,13 @@ $ cargo run
 - Open http://127.0.0.1:8080/user/1 in a browser
 - Be amazed that it returns data from SQLite in <5 ms! (on my Macbook Pro M2) :-D
 
+To build in release mode:
+
+```
+$ cargo build --release
+$ ./target/release/rust-api-sqlite
+```
+
 ## Tips
 
 If you run into trouble:
